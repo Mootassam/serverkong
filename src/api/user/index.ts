@@ -31,21 +31,8 @@ export default (app) => {
     `/tenant/:tenantId/userAdherantAutocomplete`,
     require('./userAdherantAutocomplete').default,
   );
-  app.get(
-    `/tenant/:tenantId/userAdhesionList`,
-    require('./userAdhesionList').default,
-  );
-  app.get(
-    `/tenant/:tenantId/userDonsList`,
-    require('./userDonsList').default,
-  );
-  app.get(
-    `/tenant/:tenantId/userVotesList`,
-    require('./userVotesList').default,
-  );
 
-  app.get(
-    `/tenant/:tenantId/userc`,
-    require('./Count').default,
-  );
+
+
+  
 };
