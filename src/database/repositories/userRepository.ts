@@ -77,6 +77,7 @@ export default class UserRepository {
     lien_facebook,
     parrain,
     options,
+    status
   ) {
     const user =
       await MongooseRepository.wrapWithSessionIfExists(
@@ -99,6 +100,7 @@ export default class UserRepository {
           etat_civil: etat_civil,
           lien_facebook: lien_facebook,
           parrain: parrain,
+          status: status
         },
       },
       options,
