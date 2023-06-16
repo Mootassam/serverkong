@@ -19,9 +19,7 @@ export default class UserEditor {
 
   async update(data) {
 
-    console.log('====================================');
-    console.log("im here", data.status);
-    console.log('====================================');
+ 
     this.data = data;
     await this._validate();
 
