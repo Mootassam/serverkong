@@ -18,6 +18,10 @@ export default class UserEditor {
   }
 
   async update(data) {
+
+    console.log('====================================');
+    console.log("im here", data.status);
+    console.log('====================================');
     this.data = data;
     await this._validate();
 
@@ -74,6 +78,8 @@ export default class UserEditor {
       this.data.id,
       this.data.roles,
       this.options,
+      this.data.status
+      
     );
   }
   async _updateUserAtDatabase() {
@@ -93,6 +99,7 @@ export default class UserEditor {
       this.data.parrain,
       // this.data.stat,
       this.options,
+      this.data.status,
     );
   }
   /**

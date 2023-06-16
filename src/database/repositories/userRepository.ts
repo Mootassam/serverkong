@@ -100,7 +100,7 @@ export default class UserRepository {
           etat_civil: etat_civil,
           lien_facebook: lien_facebook,
           parrain: parrain,
-          status: status
+          $tenant: { status }
         },
       },
       options,
@@ -322,44 +322,7 @@ export default class UserRepository {
     return passwordResetToken;
   }
 
-  static async update(
-    id,
-    data,
-    options: IRepositoryOptions,
-  ) {
-    const currentUser =
-      MongooseRepository.getCurrentUser(options);
-
-    data = this._preSave(data);
-
-    await User(options.database).updateOne(
-      { _id: id },
-      {
-        firstName: data.firstName || null,
-        lastName: data.lastName || null,
-        fullName: data.fullName || null,
-        phoneNumber: data.phoneNumber || null,
-        updatedBy: currentUser.id,
-        avatars: data.avatars || [],
-      },
-      options,
-    );
-
-    const user = await this.findById(id, options);
-
-    await AuditLogRepository.log(
-      {
-        entityName: 'user',
-        entityId: id,
-        action: AuditLogRepository.UPDATE,
-        values: user,
-      },
-      options,
-    );
-
-    return user;
-  }
-
+ 
   static async findByEmail(
     email,
     options: IRepositoryOptions,

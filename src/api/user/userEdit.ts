@@ -8,13 +8,9 @@ export default async (req, res) => {
     new PermissionChecker(req).validateHas(
       Permissions.values.userEdit,
     );
-
     let editor = new UserEditor(req);
-
     await editor.update(req.body.data);
-
     const payload = true;
-
     await ApiResponseHandler.success(req, res, payload);
   } catch (error) {
     await ApiResponseHandler.error(req, res, error);

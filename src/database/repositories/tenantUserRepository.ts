@@ -108,14 +108,13 @@ export default class TenantUserRepository {
     );
   }
 
-  static async updateRoles(tenantId, id, roles, options) {
-    const user =
-      await MongooseRepository.wrapWithSessionIfExists(
-        User(options.database)
-          .findById(id)
-          .populate('tenants.tenant'),
-        options,
-      );
+  static async updateRoles(tenantId, id, roles, options, status) {
+    const user = await MongooseRepository.wrapWithSessionIfExists(
+      User(options.database)
+        .findById(id)
+        .populate('tenants.tenant'),
+      options,
+    );
 
     let tenantUser = user.tenants.find((userTenant) => {
       return userTenant.tenant.id === tenantId;
@@ -127,7 +126,8 @@ export default class TenantUserRepository {
       isCreation = true;
       tenantUser = {
         tenant: tenantId,
-        status: selectStatus('invited', []),
+        // status: selectStatus('invited', []),
+        status: status,
         invitationToken: crypto
           .randomBytes(20)
           .toString('hex'),
@@ -144,7 +144,6 @@ export default class TenantUserRepository {
         options,
       );
     }
-
     let { roles: existingRoles } = tenantUser;
 
     let newRoles = [] as Array<string>;
@@ -160,21 +159,22 @@ export default class TenantUserRepository {
     }
 
     tenantUser.roles = newRoles;
-    tenantUser.status = selectStatus(
-      tenantUser.status,
-      newRoles,
-    );
+    tenantUser.status = status,
+      // tenantUser.status = selectStatus(
+      //   tenantUser.status,
+      //   newRoles,
+      // );
 
-    await User(options.database).updateOne(
-      { _id: id, 'tenants.tenant': tenantId },
-      {
-        $set: {
-          'tenants.$.roles': newRoles,
-          'tenants.$.status': tenantUser.status,
+      await User(options.database).updateOne(
+        { _id: id, 'tenants.tenant': tenantId },
+        {
+          $set: {
+            'tenants.$.roles': newRoles,
+            'tenants.$.status': tenantUser.status,
+          },
         },
-      },
-      options,
-    );
+        options,
+      );
 
     await AuditLogRepository.log(
       {
@@ -192,8 +192,70 @@ export default class TenantUserRepository {
       options,
     );
 
+    // if (status === 'active') {
+    //   const SibApiV3Sdk = require('sib-api-v3-sdk');
+    //   let defaultClient = SibApiV3Sdk.ApiClient.instance;
+
+    //   let apiKey = defaultClient.authentications['api-key'];
+    //   apiKey.apiKey = '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';
+
+    //   let apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+
+    //   let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+
+    //   sendSmtpEmail.subject = "{{params.subject}}";
+    //   sendSmtpEmail.htmlContent = `<html>
+    //   <h1>Mr/Mrs: {{params.name}}</h1>
+    //   <p>Your account is now active</p>
+    //   <a href='http://www.liguedigitale.tadeco-group.tn/auth/signin?email={{params.email}}'><center class='default-button'><p>Visit our app</p></center></a>
+    //   </html>`;
+    //   sendSmtpEmail.sender = { "name": "No Reply", "email": "ligue-digitale@tadeco-group.tn" };
+    //   // sendSmtpEmail.templateId = 2;
+    //   sendSmtpEmail.to = [{ "email": user.email, "name": user.fullName }];
+    //   sendSmtpEmail.replyTo = { "email": "salma.talbi@tadeco-group.tn", "name": "Tadeco IT" };
+    //   sendSmtpEmail.headers = { "Some-Custom-Name": "unique-id-1234" };
+    //   sendSmtpEmail.params = { "parameter": "My param value", "subject": "Ligue Digitale", "name": user.fullName, "email": user.email };
+
+    //   apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
+    //     console.log('API called successfully. Returned data: ' + JSON.stringify(data));
+    //   }, function (error) {
+    //     console.error(error);
+    //   });
+    // }
+
+    // if ((status === 'invited') && (roles.includes('membre'))) {
+    //   const SibApiV3Sdk = require('sib-api-v3-sdk');
+    //   let defaultClient = SibApiV3Sdk.ApiClient.instance;
+
+    //   let apiKey = defaultClient.authentications['api-key'];
+    //   apiKey.apiKey = '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';
+
+    //   let apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+
+    //   let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+
+    //   sendSmtpEmail.subject = "{{params.subject}}";
+    //   sendSmtpEmail.htmlContent = `<html>
+    //   <h1>Mr/Mrs: {{params.name}}</h1>
+    //   <h3>You are invited to {{params.subject}}</h3>
+    //   <h4>Your email: {{params.email}}</h4>
+    //   <a href='http://www.liguedigitale.tadeco-group.tn/auth/signup?invitationToken={{params.invitationToken}}&email={{params.email}}'><center class='default-button'><p>Register Now</p></center></a>
+    //   </html>`;
+    //   sendSmtpEmail.sender = { "name": "No Reply", "email": "ligue-digitale@tadeco-group.tn" };
+    //   sendSmtpEmail.to = [{ "email": user.email, "name": user.fullName }];
+    //   sendSmtpEmail.headers = { "Some-Custom-Name": "unique-id-1234" };
+    //   sendSmtpEmail.params = { "parameter": "My param value", "subject": "Ligue Digitale", "name": user.fullName, "email": user.email, "invitationToken": tenantUser.invitationToken };
+
+    //   apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
+    //     console.log('API called successfully. Returned data: ' + JSON.stringify(data));
+    //   }, function (error) {
+    //     console.error(error);
+    //   });
+    // }
+
     return tenantUser;
   }
+
 
   static async acceptInvitation(
     invitationToken,
