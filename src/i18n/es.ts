@@ -1,45 +1,45 @@
-const es = {
+const fr = {
   app: {
-    title: 'Aplicación',
+    title: '应用程序',
   },
   auth: {
     userNotFound:
-      'Lo sentimos, no reconocemos tus credenciales',
+      '抱歉，我们无法识别您的凭据',
     wrongPassword:
-      'Lo sentimos, no reconocemos tus credenciales',
-    weakPassword: 'Esta contraseña es muy débil.',
-    emailAlreadyInUse: 'Correo electrónico ya está en uso',
+      '抱歉，我们无法识别您的凭据',
+    weakPassword: '这个密码太弱',
+    emailAlreadyInUse: '邮箱已被使用',
     invalidEmail:
-      'Por favor proporcione un correo electrónico válido',
+      '请提供一个有效的邮箱',
     passwordReset: {
       invalidToken:
-        'El enlace de restablecimiento de contraseña no es válido o ha expirado',
-      error: 'Correo electrónico no reconocido',
+      '密码重置链接无效或已过期',
+      error: '电子邮件无法识别',
     },
     emailAddressVerificationEmail: {
       invalidToken:
-        'El enlace de verificación de correo electrónico no es válido o ha expirado.',
-      error: 'Correo electrónico no reconocido',
+      '电子邮件验证链接无效或已过期。',
+      error: `无法识别电子邮件。`,
       signedInAsWrongUser:
-        'Esta confirmación por correo electrónico se envió a {0} pero ha iniciado sesión como {1}.',
+      `此电子邮件确认已发送至 {0}，但您已登录为 {1}。`,
     },
     passwordChange: {
       invalidPassword:
-        'La contraseña anterior no es válida.',
+        '旧密码无效.',
     },
   },
   user: {
     errors: {
       userAlreadyExists:
-        'El usuario con este correo electrónico ya existe.',
-      userNotFound: 'Usuario no encontrado.',
-      destroyingHimself: 'No puedes eliminarte a ti mismo.',
+        '使用此电子邮件的用户已经存在。',
+      userNotFound: '找不到用户。',
+      destroyingHimself: '你不能删除自己。',
       revokingOwnPermission:
-        'No puede revocar su propio permiso de administrador.',
+        '你不能撤销你自己的管理员权限。',
       revokingPlanUser:
-        'No puede revocar el permiso de administrador del administrador del plan.',
+        '你不能撤销计划管理员的管理员权限。',
       destroyingPlanUser:
-        'No puede eliminar el administrador del plan.',
+        '你不能删除计划管理器。',
     },
   },
   tenant: {
@@ -71,22 +71,22 @@ const es = {
   },
   errors: {
     notFound: {
-      message: 'Extraviado',
+      message: '未找到信息',
     },
     forbidden: {
-      message: 'Prohibido',
+      message: '禁止',
     },
     validation: {
-      message: 'Ocurrió un error',
+      message: '发生错误',
     },
   },
   email: {
     error:
-      'El proveedor de correo electrónico no está configurado.',
+      '电子邮件提供商未配置。',
   },
   preview: {
     error:
-      'Lo sentimos, esta operación no está permitida en el modo de vista previa.',
+    '对不起，在预览模式下不允许执行此操作。',
   },
 
   entities: {
@@ -193,4 +193,4 @@ const es = {
   },
 };
 
-export default es;
+export default fr;
